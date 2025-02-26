@@ -22,3 +22,4 @@ bcrypt
 python-jose[cryptography]
 python-jwt==4.1.0
 psycopg2-binary==2.9.9
+email-validator==2.1.0

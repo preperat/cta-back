@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open Terminal in Back",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/back && ${command:workbench.action.terminal.new}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Open Terminal in Front",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/front && ${command:workbench.action.terminal.new}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Open Terminal in Infra",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/infra && ${command:workbench.action.terminal.new}",
+      "problemMatcher": []
+    }
+  ]
+} 

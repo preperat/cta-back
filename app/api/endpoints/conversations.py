@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from typing import List
 
 from app.core.database import get_async_session
@@ -8,6 +9,8 @@ from app.services.ai_service import AIService
 from app.schemas.conversation import ConversationCreate, ConversationResponse
 from app.schemas.message import MessageCreate, MessageResponse
 from app.models.message import MessageType
+from app.db.base import get_db
+from app.models.conversation import Conversation
 
 router = APIRouter()
 
@@ -61,6 +64,22 @@ async def get_conversation(
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     return conversation
+
+@router.get("/", response_model=List[dict])
+async def get_conversations(db: AsyncSession = Depends(get_db)):
+    """Get all conversations"""
+    result = await db.execute(select(Conversation))
+    conversations = result.scalars().all()
+    return [{"id": c.id, "title": c.title, "created_at": c.created_at} for c in conversations]
+
+@router.post("/", response_model=dict)
+async def create_conversation(title: str, db: AsyncSession = Depends(get_db)):
+    """Create a new conversation"""
+    conversation = Conversation(title=title)
+    db.add(conversation)
+    await db.commit()
+    await db.refresh(conversation)
+    return {"id": conversation.id, "title": conversation.title, "created_at": conversation.created_at}
 
 async def generate_and_save_ai_response(
     conv_service: ConversationService,

@@ -41,6 +41,10 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     
+    # Database Pool Configuration
+    DATABASE_POOL_SIZE: int = 5  # Set a default pool size
+    DATABASE_MAX_OVERFLOW: int = 10  # Optional: Set max overflow for the pool
+    
     # Security Settings
     SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
@@ -72,7 +76,7 @@ class Settings(BaseSettings):
 
     @property
     def DATABASE_URL(self) -> str:
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@localhost:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
 # Create a singleton settings instance
 settings = Settings()

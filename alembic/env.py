@@ -6,15 +6,15 @@ from sqlalchemy import pool
 from alembic import context
 
 # Import your models
-from app.db.base import Base
-from app.core.config import settings
+from app.db.base_models import Base
+from app.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 # Override sqlalchemy.url with our settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
