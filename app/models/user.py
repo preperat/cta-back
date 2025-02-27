@@ -1,15 +1,19 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.sql import func
-from .base import Base
+
 from app.core.security import SecurityManager
+
+from .base import Base
+
 
 class User(Base):
     """
     User model representing application users
-    
+
     Includes authentication and profile management
     """
-    __tablename__ = 'users'
+
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True, nullable=False)
@@ -24,12 +28,12 @@ class User(Base):
     def create(cls, username: str, email: str, password: str):
         """
         Secure user creation method with password hashing
-        
+
         Args:
             username (str): User's chosen username
             email (str): User's email address
             password (str): Plain text password
-        
+
         Returns:
             User: Newly created user instance
         """
@@ -37,17 +41,17 @@ class User(Base):
             username=username,
             email=email,
             hashed_password=SecurityManager.hash_password(password),
-            is_active=True
+            is_active=True,
         )
 
     def verify_password(self, plain_password: str) -> bool:
         """
         Verify user's password
-        
+
         Args:
             plain_password (str): Password to verify
-        
+
         Returns:
             bool: Password verification result
         """
-        return SecurityManager.verify_password(plain_password, self.hashed_password) 
+        return SecurityManager.verify_password(plain_password, self.hashed_password)

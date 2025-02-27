@@ -85,6 +85,45 @@ The project includes scripts to test database functionality:
 pytest
 ```
 
+### API Testing with HTTPie
+
+The project includes a test script that uses HTTPie to test all API endpoints:
+
+```bash
+# Install HTTPie
+pip install httpie
+
+# Run the test script
+python tests/test_api.py
+```
+
+You can also test endpoints manually with HTTPie:
+
+```bash
+# Create a conversation
+http POST http://localhost:8000/conversations/ title="Test Conversation"
+
+# Get all conversations
+http GET http://localhost:8000/conversations/
+
+# Create a message
+http POST http://localhost:8000/conversations/1/messages \
+  content="Hello, this is a test message" \
+  message_type=user \
+  conversation_id:=1
+
+# Get messages for a conversation
+http GET http://localhost:8000/conversations/1/messages
+```
+
+### Unit Testing
+
+Run unit tests with:
+
+```bash
+PYTHONPATH=. python -m unittest discover -s tests
+```
+
 ## 🛠️ Development
 
 ### Project Structure
@@ -135,4 +174,4 @@ API documentation is available at:
 
 ## 📝 License
 
-[Specify your license] 
+[Specify your license]
